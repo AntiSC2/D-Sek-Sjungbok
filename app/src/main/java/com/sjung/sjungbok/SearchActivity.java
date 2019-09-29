@@ -1,26 +1,17 @@
 package com.sjung.sjungbok;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
-import com.sjung.sjungbok.R;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Menu;
+import androidx.legacy.app.ActionBarDrawerToggle;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
