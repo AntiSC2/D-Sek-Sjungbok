@@ -48,6 +48,7 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         progressWindow = new PopupWindow(300, 300);
+        progressWindow.showAsDropDown(null, 0, 0);
     }
 
     @Override
@@ -105,14 +106,13 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
         for (int i = 0; i < SongListWrapper.songList.size(); i++) {
             if (SongListWrapper.songList.get(i).isFavorite()) {
                 favoriteTitles.add(SongListWrapper.songList.get(i).getTitle());
-                // System.out.println("'" + SongListWrapper.songList.get(i).getTitle() + "'");
             }
             if (!SongListWrapper.songList.get(i).getMidFile().equals("")
                     && !SongListWrapper.songList.get(i).getMidFile().equals("null")) {
                 melodiesIncluded.add(SongListWrapper.songList.get(i).getMidFile());
                 if (SongListWrapper.songList.get(i).getMidFile().contains("obla")) {
-                    System.out.println("'" + SongListWrapper.songList.get(i).getMidFile() + "'");
-                    System.out.println(SongListWrapper.songList.get(i).getTitle());
+                    Log.d(TAG, "'" + SongListWrapper.songList.get(i).getMidFile() + "'");
+                    Log.d(TAG, SongListWrapper.songList.get(i).getTitle());
                 }
             }
             if (!SongListWrapper.songList.get(i).forAll()) {
@@ -152,8 +152,8 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
                         melodyURL = melodyFile;
                         melodyFile = melodyFile.replace(".mid", "");
                         melodyFile += "__downloaded.mid";
-                        System.out.println("meolodyURL: " + melodyURL);
-                        System.out.println("meolodyFILE: " + melodyFile);
+                        Log.d(TAG, "meolodyURL: " + melodyURL);
+                        Log.d(TAG, "meolodyFILE: " + melodyFile);
                         downloadFile(melodyURL, context.getFilesDir() + File.separator + melodyFile);
                         melodiesIncluded.add(melodyFile);
                     }
@@ -221,7 +221,7 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
         progressWindow.dismiss();
         Toast.makeText(context, tempList.size() - songListSizeBefore + " nya sånger har lagts till", Toast.LENGTH_LONG)
                 .show();
-        System.out.println("DONE!");
+        Log.d(TAG, "AsyncTask DONE!");
     }
 
     private String getCorrectSwedishLetters(String text) {
@@ -246,7 +246,7 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
     }
 
     private void downloadFile(String url, String outputFilePath) {
-        System.out.println("laddar ner fill till path" + outputFilePath);
+        Log.d(TAG, "Downloading file" + url + ", output filepath: " + outputFilePath);
         url = "http://www.dsek.se/arkiv/sanger/ljud/" + url;
         File outputFile = new File(outputFilePath);
         try {
@@ -265,12 +265,12 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
             fos.flush();
             fos.close();
         } catch (FileNotFoundException e) {
-            System.out.println(outputFilePath);
+            Log.e(TAG, outputFilePath);
             e.printStackTrace();
-            System.out.println("Filen lyckades inte ladda nersss");
+            Log.e(TAG, "File could not be downloaded: FileNotFoundException");
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Filen lyckades inte ladda ner 2");
+            Log.e(TAG, "File could not be downloaded: IOException");
         }
     }
 }
