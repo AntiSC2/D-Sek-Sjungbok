@@ -21,34 +21,31 @@ import android.widget.AdapterView.OnItemClickListener;
 public class CategoryActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private View clickedView;
-    private ActionBarDrawerToggle mDrawerToggle;
-	colorArrayAdapter colorAdapter ;
-	private ArrayList<String>categories;
+	private ActionBarDrawerToggle mDrawerToggle;
+	ColorArrayAdapter colorAdapter;
+	private ArrayList<String> categories;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_category);
 		getActionBar().setTitle("Kategorier");
 		fixDrawerMenuStuff();
 		Intent intent = getIntent();
-		categories=intent.getStringArrayListExtra("categories");
+		categories = intent.getStringArrayListExtra("categories");
 
 		Collections.sort(categories);
 		// lägg (ingen kategori) längst bak
-//		String temp=categories.get(0);
-//		categories.remove(0);
-//		categories.add(temp);
+		// String temp=categories.get(0);
+		// categories.remove(0);
+		// categories.add(temp);
 
-        ListView categoryList = findViewById(R.id.CategoryView);
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
-				this, 
-				android.R.layout.simple_list_item_1,
-				categories );
+		ListView categoryList = findViewById(R.id.CategoryView);
+		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,
+				categories);
 
-		categoryList.setAdapter(arrayAdapter); 
+		categoryList.setAdapter(arrayAdapter);
 		categoryList.setOnItemClickListener(new OnItemClickListener() {
 
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -58,12 +55,14 @@ public class CategoryActivity extends Activity {
 				intent.putExtra("position", -1);
 				startActivity(intent);
 			}
-		}); 
+		});
 
 	}
-	protected void onResume()
-	{
-		super.onResume();	}
+
+	protected void onResume() {
+		super.onResume();
+	}
+
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
 		mDrawerToggle.syncState();
@@ -75,10 +74,9 @@ public class CategoryActivity extends Activity {
 			return true;
 		}
 		return true;
-		//return super.onOptionsItemSelected(item);
+		// return super.onOptionsItemSelected(item);
 
 	}
-
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
@@ -87,8 +85,8 @@ public class CategoryActivity extends Activity {
 		menu.findItem(R.id.action_showCategories).setVisible(false);
 		menu.findItem(R.id.action_titelSort).setVisible(false);
 		menu.findItem(R.id.action_dateSort).setVisible(false);
-        menu.findItem(R.id.action_downlodSongs).setVisible(false);
-        menu.findItem(R.id.action_logIn).setVisible(false);
+		menu.findItem(R.id.action_downlodSongs).setVisible(false);
+		menu.findItem(R.id.action_logIn).setVisible(false);
 		return super.onPrepareOptionsMenu(menu);
 	}
 
@@ -98,14 +96,13 @@ public class CategoryActivity extends Activity {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
-	private void fixDrawerMenuStuff(){
+
+	private void fixDrawerMenuStuff() {
 		mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        ListView mDrawerList = findViewById(R.id.left_drawer);
+		ListView mDrawerList = findViewById(R.id.left_drawer);
 
-
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
 
 			public void onDrawerClosed(View view) {
@@ -117,36 +114,30 @@ public class CategoryActivity extends Activity {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		colorArrayAdapter colorAdapter = new colorArrayAdapter(getBaseContext(), 
-				getResources().getStringArray(R.array.menus),-1);
+		ColorArrayAdapter colorAdapter = new ColorArrayAdapter(getBaseContext(),
+				getResources().getStringArray(R.array.menus), -1);
 
 		mDrawerList.setAdapter(colorAdapter);
 
-
 		getActionBar().setHomeButtonEnabled(true);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true); 
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 
-			
-			//tillfällig lösning, appen borde skrivas om med fragments..
+			// tillfällig lösning, appen borde skrivas om med fragments..
 			@Override
-			public void onItemClick(final AdapterView<?> parent, View view,
-					int position, long id) {
+			public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
 
-
-
-
-				if(position==0){
+				if (position == 0) {
 					view.setBackgroundColor(Color.parseColor("#33B5E5"));
-					clickedView=view;
+					clickedView = view;
 					mDrawerLayout.closeDrawers();
 					final Handler handler = new Handler();
 					handler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
 
-							Intent intent=new Intent(CategoryActivity.this,MainActivity.class);	
+							Intent intent = new Intent(CategoryActivity.this, MainActivity.class);
 
 							clickedView.setBackgroundColor(Color.parseColor("#F280A1"));
 
@@ -155,30 +146,28 @@ public class CategoryActivity extends Activity {
 						}
 					}, 200);
 
-				}
-				else if(position==1){
+				} else if (position == 1) {
 					view.setBackgroundColor(Color.parseColor("#33B5E5"));
-					clickedView=view;
+					clickedView = view;
 					mDrawerLayout.closeDrawers();
 					final Handler handler = new Handler();
 					handler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
-							Intent intent=new Intent(CategoryActivity.this,SearchActivity.class);
+							Intent intent = new Intent(CategoryActivity.this, SearchActivity.class);
 							clickedView.setBackgroundColor(Color.parseColor("#F280A1"));
-							startActivity(intent); 
+							startActivity(intent);
 						}
 					}, 200);
-				}
-				else if(position==2){
+				} else if (position == 2) {
 					view.setBackgroundColor(Color.parseColor("#33B5E5"));
-					clickedView=view;
+					clickedView = view;
 					mDrawerLayout.closeDrawers();
 					final Handler handler = new Handler();
 					handler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
-							Intent intent=new Intent(CategoryActivity.this,MainActivity.class);	
+							Intent intent = new Intent(CategoryActivity.this, MainActivity.class);
 							intent.putExtra("openFavoriteList", true);
 							intent.putExtra("menuTitle", "Favoriter");
 							intent.putExtra("position", 2);
@@ -187,16 +176,15 @@ public class CategoryActivity extends Activity {
 
 						}
 					}, 200);
-				}
-				else if(position==3){
+				} else if (position == 3) {
 					view.setBackgroundColor(Color.parseColor("#33B5E5"));
-					clickedView=view;
+					clickedView = view;
 					mDrawerLayout.closeDrawers();
 					final Handler handler = new Handler();
 					handler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
-							Intent intent=new Intent(CategoryActivity.this,MainActivity.class);	
+							Intent intent = new Intent(CategoryActivity.this, MainActivity.class);
 							intent.putExtra("menuTitle", "Historik");
 							intent.putExtra("showHistoryList", true);
 							intent.putExtra("position", 3);
@@ -206,13 +194,8 @@ public class CategoryActivity extends Activity {
 					}, 200);
 				}
 
-
-
-
 			}
-		});   
+		});
 	}
-
-
 
 }

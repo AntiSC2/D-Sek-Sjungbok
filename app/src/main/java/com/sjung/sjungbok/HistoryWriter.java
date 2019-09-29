@@ -9,100 +9,86 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-
-
 import android.content.Context;
 
 import android.os.AsyncTask;
 
-public class HistoryWriter extends AsyncTask<Void, Void, Void>{
+public class HistoryWriter extends AsyncTask<Void, Void, Void> {
 	Context context;
 	ArrayList<String> songHistory;
 	int currentIndex;
 	BufferedWriter bufferedWriter;
 	boolean remove;
-	public HistoryWriter(Context context,int currentIndex, boolean remove){
-		this.context=context;
-		this.currentIndex=currentIndex;
+
+	public HistoryWriter(Context context, int currentIndex, boolean remove) {
+		this.context = context;
+		this.currentIndex = currentIndex;
 		songHistory = new ArrayList<String>();
-		this.remove=remove;
+		this.remove = remove;
 	}
 
-
-
 	@Override
-	protected void onPreExecute()
-	{
+	protected void onPreExecute() {
 		super.onPreExecute();
 
 	}
 
-    @Override
+	@Override
 	protected void onPostExecute(Void v) {
 
 	}
 
-	
-	//ser till så att vi har 10 senaste låtarna i historiken
+	// ser till så att vi har 10 senaste låtarna i historiken
 	@Override
 	protected Void doInBackground(Void... params) {
 
-
-
-		if(checkIfHistoryFileExists()){
+		if (checkIfHistoryFileExists()) {
 			BufferedReader reader;
 			try {
-				reader = new BufferedReader(new FileReader(context.getFilesDir()+File.separator+"History.txt"));
-				String line=reader.readLine();
+				reader = new BufferedReader(new FileReader(context.getFilesDir() + File.separator + "History.txt"));
+				String line = reader.readLine();
 
-				while(line!=null){
-					if(!line.equals("")){
+				while (line != null) {
+					if (!line.equals("")) {
 						songHistory.add(line);
 					}
 
-					line=reader.readLine();
-				}				
+					line = reader.readLine();
+				}
 				reader.close();
-			} catch (Exception e) {		
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 
-
-			if(!remove){
-				if(songHistory.contains(Integer.toString(currentIndex))){
+			if (!remove) {
+				if (songHistory.contains(Integer.toString(currentIndex))) {
 					songHistory.remove(Integer.toString(currentIndex));
 					songHistory.add(0, Integer.toString(currentIndex));
-				}
-				else{
-					if(songHistory.size()<10){
+				} else {
+					if (songHistory.size() < 10) {
 						songHistory.add(0, Integer.toString(currentIndex));
-					}
-					else{
+					} else {
 						songHistory.remove(9);
 						songHistory.add(0, Integer.toString(currentIndex));
 
 					}
 				}
 
-			}
-			else{
+			} else {
 
 				songHistory.remove(Integer.toString(currentIndex));
 			}
 
-		}
-		else{
+		} else {
 			songHistory.add(0, Integer.toString(currentIndex));
 		}
 
-
-		
-		
-		
 		try {
-			bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(context.getFilesDir()+File.separator+"History.txt"), StandardCharsets.UTF_8));
-			for(int i=0;i<songHistory.size();i++){
-				bufferedWriter.write(songHistory.get(i)+"\n");
+			bufferedWriter = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(context.getFilesDir() + File.separator + "History.txt"),
+							StandardCharsets.UTF_8));
+			for (int i = 0; i < songHistory.size(); i++) {
+				bufferedWriter.write(songHistory.get(i) + "\n");
 			}
 
 			bufferedWriter.close();
@@ -110,14 +96,11 @@ public class HistoryWriter extends AsyncTask<Void, Void, Void>{
 			e.printStackTrace();
 		}
 
-
-
-
-
 		return null;
 	}
-	private boolean checkIfHistoryFileExists(){
-		File historyFile = new File(context.getFilesDir()+File.separator+"History.txt");
+
+	private boolean checkIfHistoryFileExists() {
+		File historyFile = new File(context.getFilesDir() + File.separator + "History.txt");
 		return historyFile.exists();
 
 	}

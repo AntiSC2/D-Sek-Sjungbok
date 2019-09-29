@@ -46,7 +46,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends Activity implements AsyncTaskCompleteListener<Boolean>{
+public class MainActivity extends Activity implements AsyncTaskCompleteListener<Boolean> {
 
     ListView listView;
     HashSet<String> existingSongs;
@@ -68,12 +68,11 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
     private HashSet<String> categories;
     private int currentSort = 0;
 
-
     private DrawerLayout mDrawerLayout;
     private View clickedView;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    colorArrayAdapter colorAdapter;
+    ColorArrayAdapter colorAdapter;
 
     private int versionOfApp = -1;
 
@@ -84,7 +83,8 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
 
         setContentView(R.layout.activity_main2);
 
-        //vi använder MainActivityn för att visa många av de olika vyerna, borde nog göra om med fragments
+        // vi använder MainActivityn för att visa många av de olika vyerna, borde nog
+        // göra om med fragments
         Intent intent = getIntent();
         isInFavoriteList = intent.getBooleanExtra("openFavoriteList", false);
         showHistory = intent.getBooleanExtra("showHistoryList", false);
@@ -98,11 +98,9 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         position = intent.getIntExtra("position", 0);
         fixDrawerMenuStuff();
 
-
         categories = new HashSet<String>();
         existingSongs = new HashSet<String>();
         hasSearched = false;
-
 
         SharedPreferences settings = getSharedPreferences("SETTINGS", 0);
         int versionOfAppSaved = settings.getInt("VERSION", -1);
@@ -112,9 +110,11 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("FIRSTSTART", false);
             editor.commit();
-//            Toast.makeText(getBaseContext(), "Sången \""+longClickedSong.getTitle()+"\" bortagen från favoriterna", Toast.LENGTH_LONG).show();
+            // Toast.makeText(getBaseContext(), "Sången \""+longClickedSong.getTitle()+"\"
+            // bortagen från favoriterna", Toast.LENGTH_LONG).show();
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Nu finns möjlighet att logga in på ditt Datatekniksektionen konto i appen, genom att göra det får du tillgång till låtar som kan vara stötande. Om du inte är medlem eller vill se sådanna sånger så är det bara att inte logga in.")
+            builder.setMessage(
+                    "Nu finns möjlighet att logga in på ditt Datatekniksektionen konto i appen, genom att göra det får du tillgång till låtar som kan vara stötande. Om du inte är medlem eller vill se sådanna sånger så är det bara att inte logga in.")
                     .setTitle("");
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -123,7 +123,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-
 
         try {
             PackageInfo pInfo;
@@ -135,7 +134,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         }
 
         if (versionOfApp > versionOfAppSaved) {
-            //det har kommit en ny version av appen.
+            // det har kommit en ny version av appen.
             copyInitialSongFile();
             settings = getSharedPreferences("SETTINGS", 0);
             SharedPreferences.Editor editor = settings.edit();
@@ -144,12 +143,10 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
             versionOfAppSaved = versionOfApp;
         }
 
-
         if (!ifSongFileExists()) {
             copyInitialSongFile();
 
         }
-
 
         if (SongListWrapper.songList != null) {
             System.out.println("populera SongListWrappern? 2");
@@ -166,12 +163,10 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
             System.out.println("size: " + SongListWrapper.songList.size());
         }
 
-
     }
 
     protected void onResume() {
         super.onResume();
-
 
         currentContext = this;
 
@@ -185,12 +180,10 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         String lyric = intent.getStringExtra("lyrics");
         String categoryToShow = intent.getStringExtra("category");
 
-
         if (StaticBoolean.addedFavorite) {
             StaticBoolean.addedFavorite = false;
             allSongsList.get(index).makeFavorite();
         }
-
 
         if (isInFavoriteList) {
             showFavorites();
@@ -198,9 +191,8 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         } else if (showHistory) {
             showHistory();
 
-
         } else if (title != null || melody != null || lyric != null) {
-            //genomför en sökning
+            // genomför en sökning
 
             if (!hasSearched) {
                 String searchString;
@@ -222,7 +214,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
                 hasSearched = true;
             }
 
-
         } else if (categoryToShow != null) {
             activeSongList = new ArrayList<Song>();
             Song temp;
@@ -239,7 +230,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         }
     }
 
-
     private boolean ifSongFileExists() {
         File songFile = new File(this.getFilesDir() + File.separator + "Songs.txt");
         return songFile.exists();
@@ -251,8 +241,10 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
 
         BufferedWriter bufferedWriter;
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(getResources().openRawResource(R.raw.songlist), StandardCharsets.UTF_8));
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(getResources().openRawResource(R.raw.songlist), StandardCharsets.UTF_8));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
             String line = reader.readLine();
             while (line != null) {
                 bufferedWriter.write(line + "\n");
@@ -270,7 +262,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
     public void searchSongs(View v) {
         Intent intent = new Intent(this, SearchActivity.class);
         startActivity(intent);
-
 
     }
 
@@ -340,7 +331,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
 
     }
 
-
     public void sortMelody(View v) {
         sortMelody();
     }
@@ -359,7 +349,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         Collections.sort(activeSongList, new Comparator<Song>() {
 
             public int compare(Song a, Song b) {
-                //tvärtom här för vi vill ha senaste överst
+                // tvärtom här för vi vill ha senaste överst
                 int compareToResult = b.compareToDate(a);
                 if (compareToResult == 0) {
                     return b.compareTo(a);
@@ -374,7 +364,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
 
         Searcher searcher = new Searcher(this, this, allSongsList, titleSearch, lyricsSearch, searchString);
         searcher.execute();
-
 
     }
 
@@ -392,11 +381,12 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         StringBuilder sb = new StringBuilder();
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(this.getFilesDir() + File.separator + "Songs.txt")), StandardCharsets.UTF_8));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(new File(this.getFilesDir() + File.separator + "Songs.txt")),
+                    StandardCharsets.UTF_8));
             String line = reader.readLine();
 
             while (line != null) {
-
 
                 if (line.equals("<title>")) {
                     line = reader.readLine();
@@ -455,15 +445,16 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         for (int i = 0; i < titleList.size(); i++) {
             boolean forAll = forAllList.get(i);
             if (!loggedIn && !forAll) {
-                snuskigaVisor.add(new Song(titleList.get(i), melodyList.get(i), lyricList.get(i), favoriteList.get(i), categoryList.get(i), dateList.get(i), midFileList.get(i), forAll));
+                snuskigaVisor.add(new Song(titleList.get(i), melodyList.get(i), lyricList.get(i), favoriteList.get(i),
+                        categoryList.get(i), dateList.get(i), midFileList.get(i), forAll));
             } else {
-                activeSongList.add(new Song(titleList.get(i), melodyList.get(i), lyricList.get(i), favoriteList.get(i), categoryList.get(i), dateList.get(i), midFileList.get(i),forAll));
-                allSongsList.add(new Song(titleList.get(i), melodyList.get(i), lyricList.get(i), favoriteList.get(i), categoryList.get(i), dateList.get(i), midFileList.get(i),forAll));
+                activeSongList.add(new Song(titleList.get(i), melodyList.get(i), lyricList.get(i), favoriteList.get(i),
+                        categoryList.get(i), dateList.get(i), midFileList.get(i), forAll));
+                allSongsList.add(new Song(titleList.get(i), melodyList.get(i), lyricList.get(i), favoriteList.get(i),
+                        categoryList.get(i), dateList.get(i), midFileList.get(i), forAll));
             }
 
         }
-
-
 
     }
 
@@ -472,24 +463,21 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         toggleNOSongMessage(songList);
         activeSongList = new ArrayList<Song>(songList);
 
-
         adapter = new SimplerSongArrayAdapter(this, activeSongList);
 
         SongArrayAdapter adapter2 = new SongArrayAdapter(this, activeSongList, currentSort);
 
-
-//        if(currentSort==2){
+        // if(currentSort==2){
         listView.setAdapter(adapter);
-//        else{
-//            listView.setAdapter(adapter2);
-//        }
+        // else{
+        // listView.setAdapter(adapter2);
+        // }
         listView.setOnItemClickListener(new OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Song clickedSong = activeSongList.get(position);
                 Intent intent = new Intent(view.getContext(), SongPane.class);
                 intent.putExtra("Song", clickedSong);
-
 
                 // vi behöver rätt index
                 index = allSongsList.indexOf(activeSongList.get(position));
@@ -504,12 +492,13 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
             @Override
             public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
 
-
                 Song longClickedSong = activeSongList.get(position);
 
                 if (isInFavoriteList) {
                     longClickedSong.unFavorite();
-                    Toast.makeText(getBaseContext(), "Sången \"" + longClickedSong.getTitle() + "\" bortagen från favoriterna", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(),
+                            "Sången \"" + longClickedSong.getTitle() + "\" bortagen från favoriterna",
+                            Toast.LENGTH_LONG).show();
                     activeSongList.remove(position);
                     adapter.notifyDataSetChanged();
                     toggleNOSongMessage(activeSongList);
@@ -518,9 +507,13 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
                 } else {
                     if (!longClickedSong.isFavorite()) {
                         longClickedSong.makeFavorite();
-                        Toast.makeText(getBaseContext(), "Sången \"" + longClickedSong.getTitle() + "\" har lagts till i favoriter", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(),
+                                "Sången \"" + longClickedSong.getTitle() + "\" har lagts till i favoriter",
+                                Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getBaseContext(), "Sången \"" + longClickedSong.getTitle() + "\" finns redan i favoriter", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(),
+                                "Sången \"" + longClickedSong.getTitle() + "\" finns redan i favoriter",
+                                Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -530,15 +523,13 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
             }
         });
 
-
         if (state != null) {
             listView.onRestoreInstanceState(state);
         }
 
     }
 
-
-    //används inte just nu
+    // används inte just nu
     private void downloadSongs() {
         if (isNetworkAvailable()) {
             JSONDownloader downloader = new JSONDownloader(this);
@@ -563,15 +554,14 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
             public int compare(Song a, Song b) {
                 return a.compareTo(b);
 
-
             }
         });
-
 
         BufferedWriter bufferedWriter;
         try {
 
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
 
             for (int i = 0; i < allSongsList.size(); i++)
                 bufferedWriter.write(allSongsList.get(i).writeToFileFormat());
@@ -611,7 +601,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
 
             intent.putStringArrayListExtra("categories", categoriesAsArrayList);
 
-
             startActivity(intent);
         } else if (item.getItemId() == R.id.action_downlodSongs) {
             downloadSongs();
@@ -624,14 +613,13 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
                     toast.show();
                 }
 
-
             } else {
                 logout();
                 item.setTitle("Logga in");
                 resetHistory();
                 populateSongListArrayAndHashSetFromFile();
                 populateListView(activeSongList);
-                SongListWrapper.songList=allSongsList;
+                SongListWrapper.songList = allSongsList;
 
             }
         } else if (mDrawerToggle.onOptionsItemSelected(item)) {
@@ -639,12 +627,13 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         }
         return true;
 
-
     }
-    private void resetHistory(){
+
+    private void resetHistory() {
         BufferedWriter bufferedWriter;
         try {
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getFilesDir() + File.separator + "History.txt"), StandardCharsets.UTF_8));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(getFilesDir() + File.separator + "History.txt"), StandardCharsets.UTF_8));
             bufferedWriter.write("");
             bufferedWriter.close();
         } catch (IOException e) {
@@ -664,7 +653,8 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
             public void onClick(DialogInterface dialog, int id) {
                 EditText usernameEditText = promptsView.findViewById(R.id.username);
                 EditText passwordEditText = promptsView.findViewById(R.id.password);
-                LoginTask loginTask = new LoginTask(currentContext, usernameEditText.getText().toString(), passwordEditText.getText().toString(), item,temp);
+                LoginTask loginTask = new LoginTask(currentContext, usernameEditText.getText().toString(),
+                        passwordEditText.getText().toString(), item, temp);
                 loginTask.execute();
             }
         });
@@ -680,21 +670,24 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         Toast.makeText(this, "Utloggad", Toast.LENGTH_LONG).show();
     }
 
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 
-
         System.out.println(menuTitle);
-        menu.findItem(R.id.action_titelSort).setVisible((menuTitle.equals("Sånger") || menuTitle.equals("Favoriter") || menuTitle.equals("Sökresultat")) && !drawerOpen);
-        menu.findItem(R.id.action_melodySort).setVisible((menuTitle.equals("Sånger") || menuTitle.equals("Favoriter") || menuTitle.equals("Sökresultat")) && !drawerOpen);
-        menu.findItem(R.id.action_dateSort).setVisible((menuTitle.equals("Sånger") || menuTitle.equals("Favoriter") || menuTitle.equals("Sökresultat")) && !drawerOpen);
+        menu.findItem(R.id.action_titelSort).setVisible(
+                (menuTitle.equals("Sånger") || menuTitle.equals("Favoriter") || menuTitle.equals("Sökresultat"))
+                        && !drawerOpen);
+        menu.findItem(R.id.action_melodySort).setVisible(
+                (menuTitle.equals("Sånger") || menuTitle.equals("Favoriter") || menuTitle.equals("Sökresultat"))
+                        && !drawerOpen);
+        menu.findItem(R.id.action_dateSort).setVisible(
+                (menuTitle.equals("Sånger") || menuTitle.equals("Favoriter") || menuTitle.equals("Sökresultat"))
+                        && !drawerOpen);
         menu.findItem(R.id.action_showCategories).setVisible(!drawerOpen && menuTitle.equals("Sånger"));
         menu.findItem(R.id.action_downlodSongs).setVisible(menuTitle.equals("Sånger") && !drawerOpen);
         menu.findItem(R.id.action_logIn).setVisible(menuTitle.equals("Sånger") && !drawerOpen);
-
 
         return super.onPrepareOptionsMenu(menu);
     }
@@ -717,10 +710,8 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
 
         mDrawerList = findViewById(R.id.left_drawer);
 
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open,
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
                 R.string.drawer_close) {
-
 
             public void onDrawerClosed(View view) {
                 getActionBar().setTitle(menuTitle);
@@ -731,30 +722,26 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
             public void onDrawerOpened(View drawerView) {
                 getActionBar().setTitle(menuTitle);
 
-
                 invalidateOptionsMenu();
             }
 
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        colorArrayAdapter colorAdapter = new colorArrayAdapter(getBaseContext(),
+        ColorArrayAdapter colorAdapter = new ColorArrayAdapter(getBaseContext(),
                 getResources().getStringArray(R.array.menus), position);
-
 
         mDrawerList.setAdapter(colorAdapter);
 
         getActionBar().setHomeButtonEnabled(true);
 
-
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //borde byggas om med menyn som ett fragment
+        // borde byggas om med menyn som ett fragment
         mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
-            public void onItemClick(final AdapterView<?> parent, View view,
-                                    int position, long id) {
+            public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
                 if (position == 0) {
                     view.setBackgroundColor(Color.parseColor("#33B5E5"));
                     clickedView = view;
@@ -772,7 +759,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
                             } else {
                                 clickedView.setBackgroundColor(Color.parseColor("#E16990"));
                             }
-
 
                         }
                     }, 200);
@@ -834,16 +820,15 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
                     }, 200);
                 }
 
-
             }
         });
     }
 
     public void showHelpNoFavorites() {
         builder = new AlertDialog.Builder(this);
-        builder.setMessage("Här var det tomt.\n\nDu kan lägga till sånger från sånglistan genom att \"Long click:a\" på en sång i sånglistan.\n\nEller genom att gå in på en sång och sen klicka på menyknappen längst uppe till höger och välja \"lägg till i favoriter\"")
-                .setCancelable(false)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setMessage(
+                "Här var det tomt.\n\nDu kan lägga till sånger från sånglistan genom att \"Long click:a\" på en sång i sånglistan.\n\nEller genom att gå in på en sång och sen klicka på menyknappen längst uppe till höger och välja \"lägg till i favoriter\"")
+                .setCancelable(false).setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                     }
@@ -864,14 +849,19 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
                     Song tempSong = activeSongList.get(position);
                     if (!tempSong.isFavorite()) {
                         tempSong.makeFavorite();
-                        Toast.makeText(getBaseContext(), "Sången \"" + tempSong.getTitle() + "\" har lagts till i favoriter", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(),
+                                "Sången \"" + tempSong.getTitle() + "\" har lagts till i favoriter", Toast.LENGTH_LONG)
+                                .show();
                     } else {
-                        Toast.makeText(getBaseContext(), "Sången \"" + tempSong.getTitle() + "\" finns redan i favoriter", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(),
+                                "Sången \"" + tempSong.getTitle() + "\" finns redan i favoriter", Toast.LENGTH_LONG)
+                                .show();
                     }
                     writeAllSongsToFile();
 
                 } else {
-                    HistoryWriter historyWriter = new HistoryWriter(currentContext, allSongsList.indexOf(activeSongList.get(position)), true);
+                    HistoryWriter historyWriter = new HistoryWriter(currentContext,
+                            allSongsList.indexOf(activeSongList.get(position)), true);
                     historyWriter.execute();
                     activeSongList.remove(position);
                     adapter.notifyDataSetChanged();
@@ -903,6 +893,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
     public void onTaskComplete(Boolean result) {
         populateSongListArrayAndHashSetFromFile();
         populateListView(activeSongList);
-        SongListWrapper.songList=allSongsList;
+        SongListWrapper.songList = allSongsList;
     }
 }

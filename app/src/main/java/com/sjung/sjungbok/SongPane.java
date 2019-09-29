@@ -38,13 +38,12 @@ import android.widget.AdapterView.OnItemClickListener;
 public class SongPane extends Activity {
     TextView textView;
 
-
     private DrawerLayout mDrawerLayout;
     private View clickedView;
     // ListView represents Navigation Drawer
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-    colorArrayAdapter colorAdapter;
+    ColorArrayAdapter colorAdapter;
     ArrayList<Song> allSongsList;
     Song song;
     int index;
@@ -61,7 +60,7 @@ public class SongPane extends Activity {
         song = intent.getParcelableExtra("Song");
         index = intent.getIntExtra("index", -2);
 
-        //System.out.println(song.dateString);
+        // System.out.println(song.dateString);
         textView.setText(Html.fromHtml(song.songToString()));
         textView.scrollTo(0, textView.getTop());
         getActionBar().setTitle(song.getTitle());
@@ -71,7 +70,6 @@ public class SongPane extends Activity {
         HistoryWriter historyWriter = new HistoryWriter(this, index, false);
         historyWriter.execute();
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
 
     }
 
@@ -91,11 +89,12 @@ public class SongPane extends Activity {
 
         try {
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(this.getFilesDir() + File.separator + "Songs.txt")), StandardCharsets.UTF_8));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    new FileInputStream(new File(this.getFilesDir() + File.separator + "Songs.txt")),
+                    StandardCharsets.UTF_8));
             String line = reader.readLine();
 
             while (line != null) {
-
 
                 if (line.equals("<title>")) {
                     line = reader.readLine();
@@ -130,8 +129,7 @@ public class SongPane extends Activity {
                     line = reader.readLine();
                     midFileList.add(line);
                     reader.readLine();
-                }
-                else if (line.equals("<forall>")) {
+                } else if (line.equals("<forall>")) {
                     line = reader.readLine();
                     forAllList.add(Boolean.valueOf(line));
                     reader.readLine();
@@ -146,9 +144,9 @@ public class SongPane extends Activity {
             System.out.println("fel här?");
         }
         for (int i = 0; i < titleList.size(); i++) {
-            allSongsList.add(new Song(titleList.get(i), melodyList.get(i), lyricList.get(i), favoriteList.get(i), categoryList.get(i), dateList.get(i), midFileList.get(i),forAllList.get(i)));
+            allSongsList.add(new Song(titleList.get(i), melodyList.get(i), lyricList.get(i), favoriteList.get(i),
+                    categoryList.get(i), dateList.get(i), midFileList.get(i), forAllList.get(i)));
         }
-
 
     }
 
@@ -160,15 +158,14 @@ public class SongPane extends Activity {
             public int compare(Song a, Song b) {
                 return a.compareTo(b);
 
-
             }
         });
-
 
         BufferedWriter bufferedWriter;
         try {
 
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
 
             for (int i = 0; i < allSongsList.size(); i++)
                 bufferedWriter.write(allSongsList.get(i).writeToFileFormat());
@@ -180,21 +177,19 @@ public class SongPane extends Activity {
 
     }
 
-
     private void playSong(MenuItem icon) {
-
 
         try {
             System.out.println(this.getFilesDir() + File.separator + song.getMidFile());
             if (song.getMidFile().contains("__downloaded")) {
-                mediaPlayer = MediaPlayer.create(this, Uri.parse(this.getFilesDir() + File.separator + song.getMidFile()));
+                mediaPlayer = MediaPlayer.create(this,
+                        Uri.parse(this.getFilesDir() + File.separator + song.getMidFile()));
             } else {
                 AssetFileDescriptor afd = getAssets().openFd(song.getMidFile());
                 mediaPlayer = new MediaPlayer();
                 mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
                 mediaPlayer.prepare();
             }
-
 
         } catch (IllegalArgumentException e) {
             // TODO Auto-generated catch block
@@ -210,7 +205,6 @@ public class SongPane extends Activity {
         mediaPlayer.start();
         listener = new MediaPlayerListener(musicIcon, this);
         mediaPlayer.setOnCompletionListener(listener);
-
 
     }
 
@@ -232,7 +226,6 @@ public class SongPane extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -248,7 +241,7 @@ public class SongPane extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_addToFavorites) {
-            //			sortTitle();
+            // sortTitle();
 
             addToFavorites();
         }
@@ -262,8 +255,7 @@ public class SongPane extends Activity {
                     musicIcon = item.setIcon(getResources().getDrawable(R.drawable.rosanot));
                     playSong(musicIcon);
 
-                    //vi måste sätta listenern efter vi startat sången..
-
+                    // vi måste sätta listenern efter vi startat sången..
 
                 }
             } else {
@@ -272,20 +264,19 @@ public class SongPane extends Activity {
                 playSong(musicIcon);
             }
 
-
         }
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return true;
-        //return super.onOptionsItemSelected(item);
+        // return super.onOptionsItemSelected(item);
 
     }
 
     private void addToFavorites() {
         if (!song.isFavorite()) {
-            Toast.makeText(getBaseContext(), "Sången \"" + song.getTitle() + "\" har lagts till i favoriter", Toast.LENGTH_LONG).show();
-
+            Toast.makeText(getBaseContext(), "Sången \"" + song.getTitle() + "\" har lagts till i favoriter",
+                    Toast.LENGTH_LONG).show();
 
             if (SongListWrapper.songList != null) {
                 allSongsList = SongListWrapper.songList;
@@ -295,16 +286,15 @@ public class SongPane extends Activity {
                 SongListWrapper.songList = allSongsList;
             }
 
-
             Song song1 = allSongsList.get(index);
             song1.makeFavorite();
             song.makeFavorite();
             writeAllSongsToFile(allSongsList);
 
-
             StaticBoolean.addedFavorite = true;
         } else {
-            Toast.makeText(getBaseContext(), "Sången \"" + song.getTitle() + "\" finns redan i favoriter", Toast.LENGTH_LONG).show();
+            Toast.makeText(getBaseContext(), "Sången \"" + song.getTitle() + "\" finns redan i favoriter",
+                    Toast.LENGTH_LONG).show();
         }
     }
 
@@ -316,12 +306,11 @@ public class SongPane extends Activity {
         // If the drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
         menu.findItem(R.id.musik).setVisible(song.hasMidFile() && !drawerOpen);
-        //		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+        // menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
         menu.findItem(R.id.action_addToFavorites).setVisible(!drawerOpen);
 
         return super.onPrepareOptionsMenu(menu);
     }
-
 
     private void fixDrawerMenuStuff() {
         mDrawerLayout = findViewById(R.id.drawer_layout);
@@ -329,8 +318,7 @@ public class SongPane extends Activity {
         mDrawerList = findViewById(R.id.left_drawer);
 
         // Getting reference to the ActionBarDrawerToggle
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open,
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
                 R.string.drawer_close) {
 
             /** Called when drawer is closed */
@@ -342,28 +330,24 @@ public class SongPane extends Activity {
             /** Called when a drawer is opened */
             public void onDrawerOpened(View drawerView) {
 
-
                 invalidateOptionsMenu();
             }
 
         };
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        colorArrayAdapter colorAdapter = new colorArrayAdapter(getBaseContext(),
+        ColorArrayAdapter colorAdapter = new ColorArrayAdapter(getBaseContext(),
                 getResources().getStringArray(R.array.menus), -1);
-
 
         mDrawerList.setAdapter(colorAdapter);
 
         getActionBar().setHomeButtonEnabled(true);
 
-
         getActionBar().setDisplayHomeAsUpEnabled(true);
         mDrawerList.setOnItemClickListener(new OnItemClickListener() {
 
             @Override
-            public void onItemClick(final AdapterView<?> parent, View view,
-                                    int position, long id) {
+            public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
                 stopSong();
                 if (position == 0) {
                     view.setBackgroundColor(Color.parseColor("#33B5E5"));
@@ -375,10 +359,9 @@ public class SongPane extends Activity {
                         public void run() {
 
                             Intent intent = new Intent(SongPane.this, MainActivity.class);
-                            //							intent.putExtra("menuTitle", "Sånger");
+                            // intent.putExtra("menuTitle", "Sånger");
                             clickedView.setBackgroundColor(Color.parseColor("#F280A1"));
                             startActivity(intent);
-
 
                         }
                     }, 200);
@@ -412,7 +395,6 @@ public class SongPane extends Activity {
                             clickedView.setBackgroundColor(Color.parseColor("#F280A1"));
                             startActivity(intent);
 
-
                         }
                     }, 200);
                 } else if (position == 3) {
@@ -431,11 +413,9 @@ public class SongPane extends Activity {
                             clickedView.setBackgroundColor(Color.parseColor("#F280A1"));
                             startActivity(intent);
 
-
                         }
                     }, 200);
                 }
-
 
             }
         });

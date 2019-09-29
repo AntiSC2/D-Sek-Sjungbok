@@ -20,112 +20,104 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.view.KeyEvent;
 
 public class SearchActivity extends Activity {
-	
-	
-
 	EditText titleSearchString;
 	EditText melodySearchString;
 	EditText lyricSearchString;
-	
-	
+
 	private DrawerLayout mDrawerLayout;
 	private View clickedView;
 	private ActionBarDrawerToggle mDrawerToggle;
-	colorArrayAdapter colorAdapter ;
+	ColorArrayAdapter colorAdapter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.activity_search2);
 		getActionBar().setTitle("Sök");
 		fixDrawerMenuStuff();
-		
-		titleSearchString   = findViewById(R.id.titel);
+
+		titleSearchString = findViewById(R.id.titel);
 		titleSearchString.setHorizontallyScrolling(false);
 		titleSearchString.setMaxLines(Integer.MAX_VALUE);
 		titleSearchString.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-		    @Override
-		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-		        	actuallSearch();
-		            return true;
-		        }
-		        return false;
-		    }
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					actuallSearch();
+					return true;
+				}
+				return false;
+			}
 		});
-		melodySearchString   = findViewById(R.id.melodi);
+		melodySearchString = findViewById(R.id.melodi);
 		melodySearchString.setHorizontallyScrolling(false);
 		melodySearchString.setMaxLines(Integer.MAX_VALUE);
 		melodySearchString.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-		    @Override
-		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-		        	actuallSearch();
-		            return true;
-		        }
-		        return false;
-		    }
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					actuallSearch();
+					return true;
+				}
+				return false;
+			}
 		});
-		lyricSearchString   = findViewById(R.id.text);
+		lyricSearchString = findViewById(R.id.text);
 		lyricSearchString.setHorizontallyScrolling(false);
 		lyricSearchString.setMaxLines(Integer.MAX_VALUE);
 		lyricSearchString.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-		    @Override
-		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		        if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-		        	actuallSearch();
-		            return true;
-		        }
-		        return false;
-		    }
+			@Override
+			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					actuallSearch();
+					return true;
+				}
+				return false;
+			}
 		});
 	}
 
-
-	public void searchForSongs(View v){
+	public void searchForSongs(View v) {
 		actuallSearch();
 	}
-	
-	private void actuallSearch(){
 
-		titleSearchString   = findViewById(R.id.titel);
-		melodySearchString   = findViewById(R.id.melodi);
-		lyricSearchString   = findViewById(R.id.text);
-		if(titleSearchString.getText().length()==0&&melodySearchString.getText().length()==0&&lyricSearchString.getText().length()==0){
-			
+	private void actuallSearch() {
+
+		titleSearchString = findViewById(R.id.titel);
+		melodySearchString = findViewById(R.id.melodi);
+		lyricSearchString = findViewById(R.id.text);
+		if (titleSearchString.getText().length() == 0 && melodySearchString.getText().length() == 0
+				&& lyricSearchString.getText().length() == 0) {
+
 			Toast toast = Toast.makeText(getApplicationContext(), "Skriv in ett värde", Toast.LENGTH_SHORT);
 			toast.show();
-		}
-		else if(titleSearchString.getText().length()!=0&&melodySearchString.getText().length()!=0){
+		} else if (titleSearchString.getText().length() != 0 && melodySearchString.getText().length() != 0) {
 			Toast toast = Toast.makeText(getApplicationContext(), "Fyll bara i ett av fälten", Toast.LENGTH_SHORT);
 			toast.show();
-		}
-		else if(titleSearchString.getText().length()!=0&&lyricSearchString.getText().length()!=0){
+		} else if (titleSearchString.getText().length() != 0 && lyricSearchString.getText().length() != 0) {
 			Toast toast = Toast.makeText(getApplicationContext(), "Fyll bara i ett av fälten", Toast.LENGTH_SHORT);
 			toast.show();
-		}
-		else if(melodySearchString.getText().length()!=0&&lyricSearchString.getText().length()!=0){
+		} else if (melodySearchString.getText().length() != 0 && lyricSearchString.getText().length() != 0) {
 			Toast toast = Toast.makeText(getApplicationContext(), "Fyll bara i ett av fälten", Toast.LENGTH_SHORT);
 			toast.show();
-		}
-		else{
+		} else {
 
 			Intent intent = new Intent(this, MainActivity.class);
-			if(titleSearchString.getText().length()!=0){
+			if (titleSearchString.getText().length() != 0) {
 				intent.putExtra("title", titleSearchString.getText().toString().toLowerCase().trim());
 			}
-			if(melodySearchString.getText().length()!=0){
+			if (melodySearchString.getText().length() != 0) {
 				intent.putExtra("melody", melodySearchString.getText().toString().toLowerCase().trim());
 			}
-			if(lyricSearchString.getText().length()!=0){
+			if (lyricSearchString.getText().length() != 0) {
 				intent.putExtra("lyrics", lyricSearchString.getText().toString().toLowerCase().trim());
 			}
 			intent.putExtra("position", -1);
 			intent.putExtra("menuTitle", "Sökresultat");
 			startActivity(intent);
-			
-			
+
 		}
 	}
 
@@ -140,29 +132,23 @@ public class SearchActivity extends Activity {
 			return true;
 		}
 		return true;
-		//return super.onOptionsItemSelected(item);
+		// return super.onOptionsItemSelected(item);
 
 	}
 
-
-
-
-	private void fixDrawerMenuStuff(){
+	private void fixDrawerMenuStuff() {
 		mDrawerLayout = findViewById(R.id.drawer_layout);
 
 		ListView mDrawerList = findViewById(R.id.left_drawer);
 
 		// Getting reference to the ActionBarDrawerToggle
-		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-				R.drawable.ic_drawer, R.string.drawer_open,
+		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.drawable.ic_drawer, R.string.drawer_open,
 				R.string.drawer_close) {
-
 
 			public void onDrawerClosed(View view) {
 
 			}
 
-		
 			public void onDrawerOpened(View drawerView) {
 
 			}
@@ -170,46 +156,40 @@ public class SearchActivity extends Activity {
 		};
 		mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-		colorArrayAdapter colorAdapter = new colorArrayAdapter(getBaseContext(), 
-				getResources().getStringArray(R.array.menus),1);
+		ColorArrayAdapter colorAdapter = new ColorArrayAdapter(getBaseContext(),
+				getResources().getStringArray(R.array.menus), 1);
 
-	
 		mDrawerList.setAdapter(colorAdapter);
 
 		getActionBar().setHomeButtonEnabled(true);
 
-		getActionBar().setDisplayHomeAsUpEnabled(true); 
-		//samma lösning här som borde byggas om.
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		// samma lösning här som borde byggas om.
 		mDrawerList.setOnItemClickListener(new OnItemClickListener() {
-			
+
 			@Override
-			public void onItemClick(final AdapterView<?> parent, View view,
-					int position, long id) {
-				if(position==0){
+			public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
+				if (position == 0) {
 					view.setBackgroundColor(Color.parseColor("#33B5E5"));
-					clickedView=view;
+					clickedView = view;
 					mDrawerLayout.closeDrawers();
 					final Handler handler = new Handler();
 					handler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
 
-							
-							Intent intent=new Intent(SearchActivity.this,MainActivity.class);	
+							Intent intent = new Intent(SearchActivity.this, MainActivity.class);
 
 							clickedView.setBackgroundColor(Color.parseColor("#F280A1"));
-							
-							startActivity(intent);
-							
 
+							startActivity(intent);
 
 						}
 					}, 200);
 
-				}
-				else if(position==1){
+				} else if (position == 1) {
 					view.setBackgroundColor(Color.parseColor("#33B5E5"));
-					clickedView=view;
+					clickedView = view;
 					mDrawerLayout.closeDrawers();
 					final Handler handler = new Handler();
 					handler.postDelayed(new Runnable() {
@@ -220,56 +200,45 @@ public class SearchActivity extends Activity {
 
 						}
 					}, 200);
-				}
-				else if(position==2){
+				} else if (position == 2) {
 					view.setBackgroundColor(Color.parseColor("#33B5E5"));
-					clickedView=view;
+					clickedView = view;
 					mDrawerLayout.closeDrawers();
 					final Handler handler = new Handler();
 					handler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
 
-							Intent intent=new Intent(SearchActivity.this,MainActivity.class);	
+							Intent intent = new Intent(SearchActivity.this, MainActivity.class);
 							intent.putExtra("openFavoriteList", true);
 							intent.putExtra("menuTitle", "Favoriter");
 							intent.putExtra("position", 2);
 							clickedView.setBackgroundColor(Color.parseColor("#F280A1"));
 							startActivity(intent);
-							
-							
-							
+
 						}
 					}, 200);
-				}
-				else if(position==3){
+				} else if (position == 3) {
 					view.setBackgroundColor(Color.parseColor("#33B5E5"));
-					clickedView=view;
+					clickedView = view;
 					mDrawerLayout.closeDrawers();
 					final Handler handler = new Handler();
 					handler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
-							
-								Intent intent=new Intent(SearchActivity.this,MainActivity.class);	
-								intent.putExtra("menuTitle", "Historik");
-								intent.putExtra("showHistoryList", true);
-								intent.putExtra("position", 3);
-								clickedView.setBackgroundColor(Color.parseColor("#F280A1"));
-								startActivity(intent);
-								
-							
+
+							Intent intent = new Intent(SearchActivity.this, MainActivity.class);
+							intent.putExtra("menuTitle", "Historik");
+							intent.putExtra("showHistoryList", true);
+							intent.putExtra("position", 3);
+							clickedView.setBackgroundColor(Color.parseColor("#F280A1"));
+							startActivity(intent);
+
 						}
 					}, 200);
 				}
 
-
-
 			}
-		});   
+		});
 	}
-
-
-
-
 }

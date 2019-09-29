@@ -7,12 +7,13 @@ import android.view.MenuItem;
 /**
  * Created by Fredrik on 2015-03-08.
  */
-public class MediaPlayerListener implements MediaPlayer.OnCompletionListener{
+public class MediaPlayerListener implements MediaPlayer.OnCompletionListener {
     MenuItem musicIcon;
     Context context;
-    public MediaPlayerListener(MenuItem musicIcon, Context context){
-        this.musicIcon=musicIcon;
-        this.context=context;
+
+    public MediaPlayerListener(MenuItem musicIcon, Context context) {
+        this.musicIcon = musicIcon;
+        this.context = context;
     }
 
     @Override

@@ -33,15 +33,11 @@ public class LoginTask extends AsyncTask<Void, String, Boolean> {
         this.listener=listener;
     }
 
-
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         progressDialog = ProgressDialog.show(context, "Försöker logga in", "", true);
     }
-
-
-
 
     @Override
     protected Boolean doInBackground(Void... params) {

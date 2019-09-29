@@ -18,31 +18,27 @@ import android.widget.ArrayAdapter;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-public class SongArrayAdapter extends ArrayAdapter<Song> implements SectionIndexer{
-
+public class SongArrayAdapter extends ArrayAdapter<Song> implements SectionIndexer {
     ArrayList<String> myElements;
     HashMap<String, Integer> alphaIndexer;
 
     String[] sections;
 
-
-
-	public SongArrayAdapter(Context context, ArrayList<Song> songs,int sortingType) {
-		super(context,R.layout.item_song,songs);
+    public SongArrayAdapter(Context context, ArrayList<Song> songs, int sortingType) {
+        super(context, R.layout.item_song, songs);
 
         alphaIndexer = new HashMap<String, Integer>();
         int size = songs.size();
         String element;
         for (int i = size - 1; i >= 0; i--) {
-            if(sortingType==0) {
+            if (sortingType == 0) {
                 element = songs.get(i).getTitle();
-            }
-            else {
+            } else {
                 element = songs.get(i).getMelody();
             }
             alphaIndexer.put(element.substring(0, 1), i);
-            //We store the first letter of the word, and its index.
-            //The Hashmap will replace the value for identical keys are putted in
+            // We store the first letter of the word, and its index.
+            // The Hashmap will replace the value for identical keys are putted in
         }
 
         Set<String> keys = alphaIndexer.keySet(); // set of letters ...sets
@@ -63,38 +59,26 @@ public class SongArrayAdapter extends ArrayAdapter<Song> implements SectionIndex
         // array of object
         keyList.toArray(sections);
 
-
     }
 
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        Song song = getItem(position);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_song, parent, false);
+        }
+        TextView textView1 = convertView.findViewById(R.id.tvSongTitle);
+        TextView textView2 = convertView.findViewById(R.id.tvSongMelody);
+        textView2.setTypeface(null, Typeface.ITALIC);
+        textView1.setText(song.getTitle());
+        textView2.setText(song.getMelody());
 
+        return convertView;
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent){
-		Song song= getItem(position);
-		if(convertView ==null){
-			convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_song,parent,false);
-		}
-		TextView textView1 = convertView.findViewById(R.id.tvSongTitle);
-		TextView textView2 = convertView.findViewById(R.id.tvSongMelody);
-		textView2.setTypeface(null, Typeface.ITALIC);
-		textView1.setText(song.getTitle());
-		textView2.setText(song.getMelody());
-		
-		
-		
-		
-		return convertView;
-	}
-	
-	
+    // }
 
-//}
-
-//class MyIndexerAdapter<T> extends ArrayAdapter<T> implements SectionIndexer {
-
-
-
-
+    // class MyIndexerAdapter<T> extends ArrayAdapter<T> implements SectionIndexer {
 
     @Override
     public int getPositionForSection(int section) {

@@ -6,9 +6,8 @@ import java.util.HashSet;
 public class SongListWrapper {
 	public static ArrayList<Song> songList;
 	public static HashSet<String> categories;
-	public SongListWrapper(ArrayList<Song> songList){
-		SongListWrapper.songList =songList;
+
+	public SongListWrapper(ArrayList<Song> songList) {
+		SongListWrapper.songList = songList;
 	}
-
-
 }

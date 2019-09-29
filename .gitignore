@@ -30,6 +30,11 @@ build/
 captures/
 output.json 
 
-#NDK
+# NDK
 obj/
 .externalNativeBuild
+
+# Visual Studio Code
+.project
+.settings/
+.classpath
