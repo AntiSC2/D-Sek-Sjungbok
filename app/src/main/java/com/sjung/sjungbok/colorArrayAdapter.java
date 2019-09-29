@@ -8,10 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
-public class colorArrayAdapter extends ArrayAdapter<String>{  
-	private final Context context;
-	private final String[] values; 
-	private int positionofSelf;
+public class colorArrayAdapter extends ArrayAdapter<String>{
+    private int positionofSelf;
 	private int blueOne=-1;
 
 
@@ -19,9 +17,7 @@ public class colorArrayAdapter extends ArrayAdapter<String>{
 
 	public colorArrayAdapter(Context context, String[] values, int positionOfSelf) {
 		super(context, R.layout.drawer_list_item, values);
-		this.context = context;
-		this.values = values;
-		this.positionofSelf=positionOfSelf;
+        this.positionofSelf=positionOfSelf;
 	}
 
 

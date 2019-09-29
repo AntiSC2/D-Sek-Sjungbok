@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -53,8 +54,6 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
         progressDialog = ProgressDialog.show(context, "Hämtar Musiken", "", true);
     }
 
-    ;
-
 
     @Override
     protected String doInBackground(Void... params) {
@@ -70,7 +69,7 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
 
             inputStream = entity.getContent();
             // json is UTF-8 by default
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"), 8);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8), 8);
             StringBuilder sb = new StringBuilder();
 
             String line = null;
@@ -128,10 +127,7 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
             JSONObject value = null;
             try {
                 value = jObject.getJSONObject(key);
-                favorite = false;
-                if (favoriteTitles.contains(getCorrectSwedishLetters(value.getString("title")).trim())) {
-                    favorite = true;
-                }
+                favorite = favoriteTitles.contains(getCorrectSwedishLetters(value.getString("title")).trim());
 
                 lastModified = value.getLong("modified");
                 if (lastModified == 0) {
@@ -179,7 +175,7 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
         BufferedWriter bufferedWriter;
         try {
 
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(context.getFilesDir() + File.separator + "Songs.txt"), "UTF-8"));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(context.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
             for (int i = 0; i < tempList.size(); i++)
                 bufferedWriter.write(tempList.get(i).writeToFileFormat());
             bufferedWriter.close();
@@ -189,7 +185,7 @@ public class JSONDownloader extends AsyncTask<Void, String, String> {
         }
 
         try {
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(context.getFilesDir() + File.separator + "History.txt"), "UTF-8"));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(context.getFilesDir() + File.separator + "History.txt"), StandardCharsets.UTF_8));
             bufferedWriter.write("");
             bufferedWriter.close();
         } catch (IOException e) {

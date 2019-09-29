@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 
 
 public class LoginTask extends AsyncTask<Void, String, Boolean> {
@@ -87,7 +88,7 @@ public class LoginTask extends AsyncTask<Void, String, Boolean> {
     private void resetHistory(){
         BufferedWriter bufferedWriter;
         try {
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(context.getFilesDir() + File.separator + "History.txt"), "UTF-8"));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(context.getFilesDir() + File.separator + "History.txt"), StandardCharsets.UTF_8));
             bufferedWriter.write("");
             bufferedWriter.close();
         } catch (IOException e) {

@@ -21,9 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 public class CategoryActivity extends Activity {
 	private DrawerLayout mDrawerLayout;
 	private View clickedView;
-	private ListView mDrawerList;
-	private ListView categoryList;
-	private ActionBarDrawerToggle mDrawerToggle;
+    private ActionBarDrawerToggle mDrawerToggle;
 	colorArrayAdapter colorAdapter ;
 	private ArrayList<String>categories;
 
@@ -44,7 +42,7 @@ public class CategoryActivity extends Activity {
 //		categories.remove(0);
 //		categories.add(temp);
 
-		categoryList = (ListView) findViewById(R.id.CategoryView);
+        ListView categoryList = findViewById(R.id.CategoryView);
 		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
 				this, 
 				android.R.layout.simple_list_item_1,
@@ -101,9 +99,9 @@ public class CategoryActivity extends Activity {
 		return true;
 	}
 	private void fixDrawerMenuStuff(){
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerLayout = findViewById(R.id.drawer_layout);
 
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        ListView mDrawerList = findViewById(R.id.left_drawer);
 
 
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,

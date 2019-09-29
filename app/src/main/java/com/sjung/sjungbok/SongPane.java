@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -56,8 +57,8 @@ public class SongPane extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_song_pane2);
         Intent intent = getIntent();
-        textView = (TextView) findViewById(R.id.songTextView);
-        song = (Song) intent.getParcelableExtra("Song");
+        textView = findViewById(R.id.songTextView);
+        song = intent.getParcelableExtra("Song");
         index = intent.getIntExtra("index", -2);
 
         //System.out.println(song.dateString);
@@ -90,7 +91,7 @@ public class SongPane extends Activity {
 
         try {
 
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(this.getFilesDir() + File.separator + "Songs.txt")), "UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(this.getFilesDir() + File.separator + "Songs.txt")), StandardCharsets.UTF_8));
             String line = reader.readLine();
 
             while (line != null) {
@@ -167,7 +168,7 @@ public class SongPane extends Activity {
         BufferedWriter bufferedWriter;
         try {
 
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), "UTF-8"));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
 
             for (int i = 0; i < allSongsList.size(); i++)
                 bufferedWriter.write(allSongsList.get(i).writeToFileFormat());
@@ -323,9 +324,9 @@ public class SongPane extends Activity {
 
 
     private void fixDrawerMenuStuff() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList = findViewById(R.id.left_drawer);
 
         // Getting reference to the ActionBarDrawerToggle
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,

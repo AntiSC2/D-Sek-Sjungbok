@@ -30,7 +30,6 @@ public class SearchActivity extends Activity {
 	
 	private DrawerLayout mDrawerLayout;
 	private View clickedView;
-	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
 	colorArrayAdapter colorAdapter ;
 	@Override
@@ -42,7 +41,7 @@ public class SearchActivity extends Activity {
 		getActionBar().setTitle("Sök");
 		fixDrawerMenuStuff();
 		
-		titleSearchString   = (EditText)findViewById(R.id.titel);
+		titleSearchString   = findViewById(R.id.titel);
 		titleSearchString.setHorizontallyScrolling(false);
 		titleSearchString.setMaxLines(Integer.MAX_VALUE);
 		titleSearchString.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -55,7 +54,7 @@ public class SearchActivity extends Activity {
 		        return false;
 		    }
 		});
-		melodySearchString   = (EditText)findViewById(R.id.melodi);
+		melodySearchString   = findViewById(R.id.melodi);
 		melodySearchString.setHorizontallyScrolling(false);
 		melodySearchString.setMaxLines(Integer.MAX_VALUE);
 		melodySearchString.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -68,7 +67,7 @@ public class SearchActivity extends Activity {
 		        return false;
 		    }
 		});
-		lyricSearchString   = (EditText)findViewById(R.id.text);
+		lyricSearchString   = findViewById(R.id.text);
 		lyricSearchString.setHorizontallyScrolling(false);
 		lyricSearchString.setMaxLines(Integer.MAX_VALUE);
 		lyricSearchString.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -90,9 +89,9 @@ public class SearchActivity extends Activity {
 	
 	private void actuallSearch(){
 
-		titleSearchString   = (EditText)findViewById(R.id.titel);
-		melodySearchString   = (EditText)findViewById(R.id.melodi);
-		lyricSearchString   = (EditText)findViewById(R.id.text);
+		titleSearchString   = findViewById(R.id.titel);
+		melodySearchString   = findViewById(R.id.melodi);
+		lyricSearchString   = findViewById(R.id.text);
 		if(titleSearchString.getText().length()==0&&melodySearchString.getText().length()==0&&lyricSearchString.getText().length()==0){
 			
 			Toast toast = Toast.makeText(getApplicationContext(), "Skriv in ett värde", Toast.LENGTH_SHORT);
@@ -149,9 +148,9 @@ public class SearchActivity extends Activity {
 
 
 	private void fixDrawerMenuStuff(){
-		mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		mDrawerLayout = findViewById(R.id.drawer_layout);
 
-		mDrawerList = (ListView) findViewById(R.id.left_drawer);
+		ListView mDrawerList = findViewById(R.id.left_drawer);
 
 		// Getting reference to the ActionBarDrawerToggle
 		mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,

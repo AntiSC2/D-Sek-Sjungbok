@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 
@@ -34,8 +35,9 @@ public class HistoryWriter extends AsyncTask<Void, Void, Void>{
 	{
 		super.onPreExecute();
 
-	}; 
-	@Override
+	}
+
+    @Override
 	protected void onPostExecute(Void v) {
 
 	}
@@ -98,7 +100,7 @@ public class HistoryWriter extends AsyncTask<Void, Void, Void>{
 		
 		
 		try {
-			bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(context.getFilesDir()+File.separator+"History.txt"),"UTF-8"));
+			bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(context.getFilesDir()+File.separator+"History.txt"), StandardCharsets.UTF_8));
 			for(int i=0;i<songHistory.size();i++){
 				bufferedWriter.write(songHistory.get(i)+"\n");
 			}

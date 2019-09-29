@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -65,7 +66,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
     static int index;
     private Context currentContext;
     private HashSet<String> categories;
-    private String categoryToShow;
     private int currentSort = 0;
 
 
@@ -75,10 +75,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
     private ActionBarDrawerToggle mDrawerToggle;
     colorArrayAdapter colorAdapter;
 
-    private Menu menu;
-
     private int versionOfApp = -1;
-    private int versionOfAppSaved = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +105,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
 
 
         SharedPreferences settings = getSharedPreferences("SETTINGS", 0);
-        versionOfAppSaved = settings.getInt("VERSION", -1);
+        int versionOfAppSaved = settings.getInt("VERSION", -1);
 
         boolean firstStart = settings.getBoolean("FIRSTSTART", true);
         if (firstStart) {
@@ -178,7 +175,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
 
         currentContext = this;
 
-        listView = (ListView) findViewById(R.id.SongView);
+        listView = findViewById(R.id.SongView);
         listView.setFastScrollEnabled(true);
 
         Intent intent = getIntent();
@@ -186,7 +183,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         String title = intent.getStringExtra("title");
         String melody = intent.getStringExtra("melody");
         String lyric = intent.getStringExtra("lyrics");
-        categoryToShow = intent.getStringExtra("category");
+        String categoryToShow = intent.getStringExtra("category");
 
 
         if (StaticBoolean.addedFavorite) {
@@ -254,8 +251,8 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
 
         BufferedWriter bufferedWriter;
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(getResources().openRawResource(R.raw.songlist), "UTF-8"));
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), "UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(getResources().openRawResource(R.raw.songlist), StandardCharsets.UTF_8));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
             String line = reader.readLine();
             while (line != null) {
                 bufferedWriter.write(line + "\n");
@@ -395,7 +392,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         StringBuilder sb = new StringBuilder();
 
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(this.getFilesDir() + File.separator + "Songs.txt")), "UTF-8"));
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(new File(this.getFilesDir() + File.separator + "Songs.txt")), StandardCharsets.UTF_8));
             String line = reader.readLine();
 
             while (line != null) {
@@ -574,7 +571,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         BufferedWriter bufferedWriter;
         try {
 
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), "UTF-8"));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(this.getFilesDir() + File.separator + "Songs.txt"), StandardCharsets.UTF_8));
 
             for (int i = 0; i < allSongsList.size(); i++)
                 bufferedWriter.write(allSongsList.get(i).writeToFileFormat());
@@ -647,7 +644,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
     private void resetHistory(){
         BufferedWriter bufferedWriter;
         try {
-            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getFilesDir() + File.separator + "History.txt"), "UTF-8"));
+            bufferedWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(getFilesDir() + File.separator + "History.txt"), StandardCharsets.UTF_8));
             bufferedWriter.write("");
             bufferedWriter.close();
         } catch (IOException e) {
@@ -665,8 +662,8 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                EditText usernameEditText = (EditText) promptsView.findViewById(R.id.username);
-                EditText passwordEditText = (EditText) promptsView.findViewById(R.id.password);
+                EditText usernameEditText = promptsView.findViewById(R.id.username);
+                EditText passwordEditText = promptsView.findViewById(R.id.password);
                 LoginTask loginTask = new LoginTask(currentContext, usernameEditText.getText().toString(), passwordEditText.getText().toString(), item,temp);
                 loginTask.execute();
             }
@@ -706,7 +703,6 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.main, menu);
-        this.menu = menu;
         SharedPreferences settings = getSharedPreferences("SETTINGS", 0);
         boolean loggedIn = settings.getBoolean("LoggedIn", false);
         if (loggedIn) {
@@ -717,9 +713,9 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
     }
 
     private void fixDrawerMenuStuff() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerList = findViewById(R.id.left_drawer);
 
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                 R.drawable.ic_drawer, R.string.drawer_open,
@@ -888,7 +884,7 @@ public class MainActivity extends Activity implements AsyncTaskCompleteListener<
     }
 
     void toggleNOSongMessage(ArrayList<Song> songList) {
-        TextView noSongTV = (TextView) findViewById(R.id.no_listed_song_tv);
+        TextView noSongTV = findViewById(R.id.no_listed_song_tv);
         if (songList == null || songList.size() == 0) {
             if (isInFavoriteList) {
                 noSongTV.setText("Inga favoriter existerar..");

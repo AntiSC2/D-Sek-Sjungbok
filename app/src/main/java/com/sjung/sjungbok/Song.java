@@ -136,7 +136,7 @@ public class Song implements Parcelable {
 	}
 	private ArrayList<String> getArrayListBySeperatingTextBySpace(String text){
         text=text.replaceAll("[.,;:!\"?#&()]","");
-        String array[] = text.split("\\s");
+		String[] array = text.split("\\s");
 		ArrayList<String> result= new ArrayList<String>();
 		for(int i=0;i<array.length;i++){
 			//result.add(array[i].toLowerCase().replaceAll("[.,;:!\"?#&()]",""));
@@ -241,16 +241,11 @@ public class Song implements Parcelable {
              return true;
 
          Song other = (Song) obj;
-         if(this.text.equals(other.text)){
-        	 return true;
-         }
-         return false;
-     }
+		return this.text.equals(other.text);
+	}
     public boolean hasMidFile(){
     	if(!midFile.equals("")){
-    		if(!midFile.equals("null")){
-    			return true;
-    		}
+			return !midFile.equals("null");
     	}
     	return false;
     }

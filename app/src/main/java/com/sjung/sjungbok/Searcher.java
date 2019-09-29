@@ -33,8 +33,9 @@ public class Searcher  extends AsyncTask<Void, ArrayList<Song>, ArrayList<Song>>
 	{
 		super.onPreExecute();
 		progressDialog = ProgressDialog.show(context, "Söker","", true);          
-	}; 
-	@Override
+	}
+
+    @Override
 	protected void onPostExecute(ArrayList<Song> songList) {
 		progressDialog.dismiss();
 		mainActivity.populateListView(songList);

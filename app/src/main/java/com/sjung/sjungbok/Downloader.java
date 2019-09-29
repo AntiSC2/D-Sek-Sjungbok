@@ -42,10 +42,10 @@ public class Downloader extends AsyncTask<Void, String, String>{
 	{
 		super.onPreExecute();
 		progressDialog = ProgressDialog.show(context, "Hämtar Musiken","", true);          
-	}; 
+	}
 
 
-	private Response login(){
+    private Response login(){
 		Connection.Response res = null;
 		try {
 			res = Jsoup.connect("http://www.dsek.se/navigation/login.php")
